@@ -3,8 +3,8 @@ from django.contrib.auth import authenticate
 # from django.shortcuts import render, redirect
 from django.contrib.auth import logout, login
 from django.shortcuts import render, redirect
-from django.core.files.storage import FileSystemStorage
-from django.http import HttpResponse, HttpResponseNotFound
+# from django.core.files.storage import FileSystemStorage
+# from django.http import HttpResponse, HttpResponseNotFound
 from django.contrib.auth.models import User
 from django.contrib import messages
 import uuid
@@ -36,13 +36,9 @@ def loginUser(request):
             messages.success(request, 'Username Not Found.')
             return redirect('/login')
 
-        # if pwd is None:
-        #     messages.success(request, 'Password Incorrect')
-        #     return redirect('/login')
-
         users_obj = Users.objects.filter(user=user).first()
         if not users_obj.is_verified:
-            messages.success(request, 'Profile is not verified please check your mail!')
+            messages.success(request, 'Account is not verified please check your mail!')
             return redirect('/login')
 
         if authenticate(username=username, password=password):
@@ -89,13 +85,11 @@ def registerUser(request):
         except Exception as e:
             print(e)
     return render(request, 'register.html')
-    # logout(request)
-    # return redirect("/login")
 
 
 def send_mail_after_registration(email, auth_token):
     subject = 'Your account need to be verified'
-    message = f"Hi paste your link to verify your account http://127.0.0.1:8000/verify/{auth_token}"
+    message = f"Hi paste this link to verify your account http://127.0.0.1:8000/verify/{auth_token}"
     from_email = settings.EMAIL_HOST_USER
     recipient_list = [email]
     send_mail(subject, message, from_email, recipient_list)

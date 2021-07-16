@@ -128,13 +128,13 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'rshnrasal@gmail.com'
-EMAIL_HOST_PASSWORD = 'Roshan@123'
-
+EMAIL_HOST_PASSWORD = 'zjyvzalemgokzcoz'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
