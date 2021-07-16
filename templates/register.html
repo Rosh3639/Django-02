@@ -1,24 +1,25 @@
 {% extends 'base.html' %}
 
-
 {% block body %}
-<form class="yes" method="post" action="/login">
+<form class="yes" method="post" action="/register">
     {% csrf_token %}
     {% if messages %}
     {% for message in messages %}
-    <div style="color:green"><h2>{{ message }}</h2></div>
+    <div style="color:red"><h2>{{ message }}</h2></div>
     {% endfor %}
     {% endif %}
-    <h1>Login To See My Research Paper.</h1>
+    <h1>Register To My Research Paper.</h1>
     <input type="text" name="username" placeholder="Username">
+    <input type="email" name="email" placeholder="Email Address">
     <input type="password" name="password" placeholder="Password">
     <a href="" style="text-decoration:none">Forgot Password</a>
-    <input type="submit" name="submit" value="Sign In">
-
+    <input type="submit" name="submit" value="Register">
+    <br>
     <div style="color:white">
-        Don't have an account? <a href="/register" style="text-decoration:none">Create One</a>
+        Already have an account? <a href="/login" style="text-decoration:none">Sign In</a>
     </div>
     <p style="color:white">© 2020-2021</p>
 </form>
 {% endblock %}
+
 
