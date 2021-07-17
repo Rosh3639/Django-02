@@ -89,7 +89,7 @@ def registerUser(request):
 
 def send_mail_after_registration(email, auth_token):
     subject = 'Your account need to be verified'
-    message = f"Hi paste this link to verify your account https://ai-research-pdf.herokuapp.com/verify/{auth_token}"
+    message = f"Hi paste this link in your browser to verify your account https://ai-research-pdf.herokuapp.com/verify/{auth_token}"
     from_email = settings.EMAIL_HOST_USER
     recipient_list = [email]
     send_mail(subject, message, from_email, recipient_list)
