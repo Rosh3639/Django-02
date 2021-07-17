@@ -5,14 +5,13 @@
     {% csrf_token %}
     {% if messages %}
     {% for message in messages %}
-    <div style="color:red"><h2>{{ message }}</h2></div>
+    <div style="color:green"><h2>{{ message }}</h2></div>
     {% endfor %}
     {% endif %}
     <h1>Register To See My Research Paper.</h1>
     <input type="text" name="username" placeholder="Username">
     <input type="email" name="email" placeholder="Email Address">
     <input type="password" name="password" placeholder="Password">
-    <a href="/" style="text-decoration:none"><div style="color:blue">Forgot Password</div></a>
     <input type="submit" name="submit" value="Register">
     <br>
     <div style="color:white">

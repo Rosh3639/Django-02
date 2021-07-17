@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% load crispy_forms_tags %}
 {% block body %}
 <form class="yes" method="post" action="/login">
     {% csrf_token %}
@@ -12,7 +12,7 @@
     <h1>Login To See My Research Paper.</h1>
     <input type="text" name="username" placeholder="Username">
     <input type="password" name="password" placeholder="Password">
-    <a href="/" style="text-decoration:none"><div style="color:blue">Forgot Password</div></a>
+    <a href="password_reset" style="text-decoration:none"><div style="color:blue">Forgot Password</div></a>
     <input type="submit" name="submit" value="Sign In">
 
     <div style="color:white">

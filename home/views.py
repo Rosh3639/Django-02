@@ -1,3 +1,5 @@
+from django.contrib.auth.forms import AuthenticationForm
+
 from home.models import Users
 from django.contrib.auth import authenticate
 # from django.shortcuts import render, redirect
@@ -31,9 +33,13 @@ def loginUser(request):
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user = User.objects.filter(username=username).first()
-        if user is None:
-            messages.success(request, 'Username Not Found.')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect('/pdf')
+        elif user is None:
+            messages.error(request, 'Username or Password Incorrect')
             return redirect('/login')
 
         users_obj = Users.objects.filter(user=user).first()
@@ -48,15 +54,6 @@ def loginUser(request):
             else:
                 return render(request, 'login.html')
     return render(request, 'login.html')
-
-    #     user = authenticate(username=username, password=password)
-    #     if user is not None:
-    #         login(request, user)
-    #         return redirect("/pdf")
-    #     else:
-    #         return render(request, 'login.html')
-    #
-    # return render(request, 'login.html')
 
 
 def registerUser(request):
@@ -89,7 +86,7 @@ def registerUser(request):
 
 def send_mail_after_registration(email, auth_token):
     subject = 'Your account need to be verified'
-    message = f"Hi paste this link in your browser to verify your account https://ai-research-pdf.herokuapp.com/verify/{auth_token}"
+    message = f"Hi please paste this link in your browser to verify your account https://ai-research-pdf.herokuapp.com/verify/{auth_token}"
     from_email = settings.EMAIL_HOST_USER
     recipient_list = [email]
     send_mail(subject, message, from_email, recipient_list)
@@ -125,6 +122,15 @@ def error(request):
     return render(request, 'error.html')
 
 
+def pdf(request):
+    if request.user.is_anonymous:
+        return redirect("/login")
+    else:
+        return render(request, 'view_pdf.html')
+
+''''
+This was another alternative to display pdf but it wasn't able to display it on mobile!!
+'''
 # def pdf(request):
 #     fs = FileSystemStorage()
 #     filename = "C:/Users/DELL/Desktop/Roshan's Work/Django/Userproject/A.pdf"
@@ -140,9 +146,3 @@ def error(request):
 #             return response
 #     else:
 #         return HttpResponseNotFound('The requested pdf was not found in our server.')
-
-def pdf(request):
-    if request.user.is_anonymous:
-        return redirect("/login")
-    else:
-        return render(request, 'view_pdf.html')
