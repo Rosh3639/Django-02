@@ -1,20 +1,37 @@
-from django.contrib.auth.forms import AuthenticationForm
+import crispy_forms
+from django.core.exceptions import ValidationError
+from django.forms import forms
 
 from home.models import Users
 from django.contrib.auth import authenticate
-# from django.shortcuts import render, redirect
-from django.contrib.auth import logout, login
+from django.contrib.auth import login
 from django.shortcuts import render, redirect
-# from django.core.files.storage import FileSystemStorage
-# from django.http import HttpResponse, HttpResponseNotFound
 from django.contrib.auth.models import User
 from django.contrib import messages
 import uuid
 from django.conf import settings
-from django.core.mail import send_mail
+from django.contrib.auth.forms import PasswordResetForm
+import threading
+from django.core.mail import EmailMessage
 
 
-# Create your views here.
+class EmailThread(threading.Thread):
+    def __init__(self, msg):
+        self.msg = msg
+        threading.Thread.__init__(self)
+
+    def run(self):
+        self.msg.send()
+
+
+def send_mail_after_registration(email, auth_token):
+    subject = 'Your account need to be verified'
+    message = (
+        f"Hi please paste this link in your browser to verify your account https://ai-research-pdf.herokuapp.com/{auth_token}")
+    from_email = settings.EMAIL_HOST_USER
+    recipient_list = [email]
+    msg = EmailMessage(subject, message, from_email, recipient_list)
+    EmailThread(msg).start()
 
 
 def index(request):
@@ -39,7 +56,7 @@ def loginUser(request):
                 login(request, user)
                 return redirect('/pdf')
         elif user is None:
-            messages.error(request, 'Username or Password Incorrect')
+            messages.error(request, 'Incorrect Username or Password ')
             return redirect('/login')
 
         users_obj = Users.objects.filter(user=user).first()
@@ -84,14 +101,6 @@ def registerUser(request):
     return render(request, 'register.html')
 
 
-def send_mail_after_registration(email, auth_token):
-    subject = 'Your account need to be verified'
-    message = f"Hi please paste this link in your browser to verify your account https://ai-research-pdf.herokuapp.com/verify/{auth_token}"
-    from_email = settings.EMAIL_HOST_USER
-    recipient_list = [email]
-    send_mail(subject, message, from_email, recipient_list)
-
-
 def successEmail(request):
     return render(request, 'success.html')
 
@@ -128,8 +137,18 @@ def pdf(request):
     else:
         return render(request, 'view_pdf.html')
 
+
+class EmailValidationOnForgotPassword(PasswordResetForm):
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if not User.objects.filter(email__iexact=email, is_active=True).exists():
+            raise forms.ValidationError("There is no user registered with the specified email address!")
+            return
+        return email
+
+
 ''''
-This was another alternative to display pdf but it wasn't able to display it on mobile!!
+This was another alternative to display pdf but it wasn't able applicable  mobile!!
 '''
 # def pdf(request):
 #     fs = FileSystemStorage()

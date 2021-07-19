@@ -1,8 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block body %}
-<h1 style="text-align: center;">We have sent you an email !</h1>
-<br>
-<h2 style="text-align: center"><a href="/login" style="text-decoration:none" >Back To Login Page</a> </h2>
+
+<div class="alert alert-success mt-5 mx-5" role="alert" style="text-align:center">
+  <h2 style="text-align: center;">We have sent you an email!</h2>
+  <hr>
+  <h3 style="text-align: center"><a href="/login" style="text-decoration:none" >Back To Login Page</a> </h3>
+</div>
+
+
+
 {% endblock %}
 

@@ -13,7 +13,6 @@ import os.path
 from pathlib import Path
 import django_heroku
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-32=p%3utl9#utdr^p1slz1dm*oqo5gps7hm3rds-e1_)gl&y^+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
 
@@ -56,7 +55,7 @@ ROOT_URLCONF = 'Userproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR / "templates")],
+        'DIRS': [os.path.join(BASE_DIR / "templates"),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
