@@ -1,1 +1,0 @@
-alert('Login to see my research paper.\nOtherwise create a new account.');
