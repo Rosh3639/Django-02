@@ -1,7 +1,4 @@
-import crispy_forms
-from django.core.exceptions import ValidationError
 from django.forms import forms
-
 from home.models import Users
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
@@ -27,7 +24,7 @@ class EmailThread(threading.Thread):
 def send_mail_after_registration(email, auth_token):
     subject = 'Your account need to be verified'
     message = (
-        f"Hi please paste this link in your browser to verify your account http://127.0.0.1:8000/verify/{auth_token}")
+        f"Hi please paste this link in your browser to verify your account https://ai-research-pdf.herokuapp.com/verify/{auth_token}")
     from_email = settings.EMAIL_HOST_USER
     recipient_list = [email]
     msg = EmailMessage(subject, message, from_email, recipient_list)
@@ -143,7 +140,6 @@ class EmailValidationOnForgotPassword(PasswordResetForm):
         email = self.cleaned_data.get('email')
         if not User.objects.filter(email__iexact=email, is_active=True).exists():
             raise forms.ValidationError("There is no user registered with the specified email address!")
-            return
         return email
 
 
